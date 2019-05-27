@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import scrapy
+import json
 from ..items import MovieScraperItem
 
 
@@ -11,14 +12,19 @@ class ImdbScrapperSpider(scrapy.Spider):
         ]
 
     def parse(self, response):
-        items = MovieScraperItem()
+        
+        movie_res = []
+        movies = response.css(".mode-advanced")
+        for movie in movies:
+            movie_name = movie.css('.lister-item-header a').css('::text').extract()
+            movie_rating = movie.css('.ratings-imdb-rating strong').css('::text').extract()
+            movie_cast = movie.css('.lister-item-content .ghost~ a').css('::text').extract()
+            movie_res.append({
+                "movie_name": movie_name,
+                "movie_rating": movie_rating,
+                "movie_cast": movie_cast,
+            })
+        movie_res = json.dumps(movie_res, indent=4)
+        print(movie_res)
 
-        movie_name = response.css('.lister-item-header a').css('::text').extract()
-        movie_rating = response.css('.ratings-imdb-rating strong').css('::text').extract()
-        movie_cast = response.css('.lister-item-content .ghost~ a').css('::text').extract()
-
-        items['movie_name'] = movie_name
-        items['movie_rating'] = movie_rating
-        items['movie_cast'] = movie_cast
-
-        yield items
+        
