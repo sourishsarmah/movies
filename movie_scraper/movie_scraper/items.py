@@ -11,7 +11,4 @@ import scrapy
 class MovieScraperItem(scrapy.Item):
     # define the fields for your item here like:
     # name = scrapy.Field()
-    movie_name = scrapy.Field()
-    movie_rating = scrapy.Field()
-    movie_cast = scrapy.Field()
     pass
