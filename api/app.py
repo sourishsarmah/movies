@@ -12,14 +12,18 @@ client = MongoClient('mongodb://127.0.0.1', 27017)
 def upload_file(file):
     db = client['movie-db']
     movies = db.movies
-    with open(file) as csvfile:
-        reader = csv.DictReader(csvfile, delimiter=',')
-        count = 0
-        for row in reader:
-            movie_id = movies.insert_one(row).inserted_id
-            count += 1
-        print(f'Uploaded {count} movies.')
-    return 'Movies Uploaded'
+    try:
+        with open(file) as csvfile:
+            reader = csv.DictReader(csvfile, delimiter=',')
+            count = 0
+            for row in reader:
+                movie_id = movies.insert_one(row).inserted_id
+                count += 1
+            print(f'Uploaded {count} movies.')
+    except Exception:
+        return False
+
+    return True
 
 
 dbs = client.list_database_names()
@@ -54,3 +58,16 @@ def autocorrect():
     }
 
     return json.dumps(movie_like, indent=2)
+
+
+@app.route('/movies/<movie_id>')
+def movie_details(movie_id):
+    db = client['movie-db']
+    movies = db.movies
+    movie = movies.find_one({"_id": ObjectId(movie_id)})
+    movie_detail = {
+        "movie_name": movie["movie_name"],
+        "rating": movie["movie_rating"],
+        "cast": movie["movie_cast"]
+    }
+    return json.dumps(movie_detail, indent=2)
