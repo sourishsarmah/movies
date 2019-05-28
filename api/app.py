@@ -1,4 +1,4 @@
-from flask import Flask, request, redirect
+from flask import Flask, request, abort
 from flask_pymongo import MongoClient
 from bson.objectid import ObjectId
 import csv
@@ -30,4 +30,27 @@ else:
     upload_file('../movie_scraper/movies1000.csv')
 
 
+@app.route('/autocomplete')
+def autocorrect():
+    prefix = request.args.get("prefix")
+    if prefix is None:
+        return abort(400)
+    limit = request.args.get("limit")
+    if limit is None:
+        limit = 5
+    offset = request.args.get("offset")
+    if offset is None:
+        offset = 0
 
+    db = client['movie-db']
+    movies = db.movies
+    names = []
+    movie_names = movies.find(
+        {"movie_name": {"$regex": "^" + prefix, "$options": "$i"}})
+    for name in movie_names:
+        names.append(name["movie_name"])
+    movie_like = {
+        "movie_names": names
+    }
+
+    return json.dumps(movie_like, indent=2)
