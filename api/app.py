@@ -44,13 +44,17 @@ def autocorrect():
         limit = 5
     offset = request.args.get("offset")
     if offset is None:
-        offset = 0
+        offset = '0'
 
     db = client['movie-db']
     movies = db.movies
     names = []
+    offset = str(offset)
+    position = "^.{"+ offset + "}"
+    
     movie_names = movies.find(
-        {"movie_name": {"$regex": "^" + prefix, "$options": "$i"}})
+        {"movie_name": {"$regex": position + "" + prefix + "(.*)", "$options": "$i"}}
+        ).limit(int(limit))
     for name in movie_names:
         names.append(name["movie_name"])
     movie_like = {
