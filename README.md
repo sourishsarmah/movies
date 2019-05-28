@@ -25,3 +25,24 @@ Movie Details -
     ```bash
     $ scrapy crawl imdb_scraper -a max_pages=10 -o movies1000.csv
     ```
+
+
+## API
+
+### Endpoints
+
+- ```/autocorrect```
+
+    Autocomplete movie names
+
+    Parameters -
+
+    - prefix : prefix of the movie name to be completed
+    - limit : number of results to return
+    - offset : match offset position
+
+- ```/movie/<movie_id>```
+
+    Given movie_id return its details
+
+    **NOTE** - movie_id can be found out from the database primary key "_id"
