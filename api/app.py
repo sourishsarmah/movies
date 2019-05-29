@@ -76,3 +76,19 @@ def movie_details(movie_id):
         "cast": movie["movie_cast"]
     }
     return json.dumps(movie_detail, indent=2)
+
+
+@app.route('/movies')
+def show_movie_id():
+    db = client['movie-db']
+    movies = db.movies
+
+    movie_ids = []
+    movie_list = movies.find()
+    for movie in movie_list:
+        movie_ids.append({
+            "movie" : movie['movie_name'],
+            "id" : str(movie['_id']),
+        })
+    
+    return json.dumps(movie_ids, indent=4)

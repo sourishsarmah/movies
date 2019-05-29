@@ -52,11 +52,15 @@ Movie Details -
     - limit : number of results to return
     - offset : match offset position
 
-- ```/movie/<movie_id>```
+- ```/movies/<movie_id>```
 
     Given movie_id return its details
 
-    **NOTE** - movie_id can be found out from the database primary key "_id"
+    **NOTE** - movie_id can be found out from the ```/movies``` endpoint
+
+- ```/movies```
+
+    Returns a list of movies along with their ids
 
 
 ## Start API
