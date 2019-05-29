@@ -3,10 +3,11 @@ from flask_pymongo import MongoClient
 from bson.objectid import ObjectId
 import csv
 import json
+from config import DATABASE, FILENAME
 
 app = Flask(__name__)
 
-client = MongoClient('mongodb://127.0.0.1', 27017)
+client = MongoClient(DATABASE['database']+ '://' + DATABASE['host'], DATABASE['port'])
 
 
 def upload_file(file):
@@ -31,7 +32,7 @@ if 'movie-db' in dbs:
     print("Database already exits")
     db = client['movie-db']
 else:
-    upload_file('../movie_scraper/movies1000.csv')
+    upload_file(FILENAME)
 
 
 @app.route('/autocomplete')
