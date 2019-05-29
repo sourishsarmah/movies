@@ -1,5 +1,16 @@
-# movies
-Show movie details of a movie
+# Movies
+
+Details of movies
+
+
+## Requirements
+
+- Python3
+- MongoDB
+
+To install the python packages - 
+
+        $ pip3 install -r requirements.txt
 
 
 # Scraper
@@ -13,7 +24,7 @@ Movie Details -
 3. Cast
 
 
-## To Run Scaper
+## Run Scaper
 
 1. Goto movie_scraper directory
 
@@ -27,9 +38,9 @@ Movie Details -
     ```
 
 
-## API
+# API
 
-### Endpoints
+## Endpoints
 
 - ```/autocorrect```
 
@@ -46,3 +57,12 @@ Movie Details -
     Given movie_id return its details
 
     **NOTE** - movie_id can be found out from the database primary key "_id"
+
+
+## Start API
+
+- Goto directory ```/movies/api```
+
+- Run -
+
+        $ flask run
